@@ -18,13 +18,14 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Arm;
 
+import frc.robot.commands.drivetrain.SetDrivetrain;
 import frc.robot.commands.intake.IntakeIn;
 import frc.robot.commands.intake.IntakeOut;
 import frc.robot.commands.arm.ArmUp;
 import frc.robot.commands.arm.ArmDown;
 
 public class RobotContainer {
-    private final Drivetrain drivetrain = new Drivetrain();
+    private final Drivetrain m_drivetrain = new Drivetrain();
     private final Intake m_intake = new Intake();
     private final Arm m_arm = new Arm();
 
@@ -43,10 +44,11 @@ public class RobotContainer {
 
         initializeAutoChooser();
     
-        drivetrain.setDefaultCommand(new RunCommand(() -> drivetrain.arcadeDrive(
-          driverController.getRightX(),
-          driverController.getLeftY()),
-          drivetrain));
+        m_drivetrain.setDefaultCommand(
+        new SetDrivetrain(
+          m_drivetrain, 
+          () -> -driverController.getLeftY(), 
+          () -> -driverController.getRightX()));
       }
 
       private void configureButtonBindings() {
@@ -60,7 +62,7 @@ public class RobotContainer {
       public void initializeAutoChooser(){
         m_autoChooser.setDefaultOption("Do Nothing", new WaitCommand(0));
         m_autoChooser.addOption("Drive Back", new WaitCommand(0.1)
-          .andThen(new AutoDriveBackCommand(drivetrain).withTimeout(3.8)));
+          .andThen(new AutoDriveBackCommand(m_drivetrain).withTimeout(3.8)));
       
        SmartDashboard.putData("Auto Selector", m_autoChooser);
       }

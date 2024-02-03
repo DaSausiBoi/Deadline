@@ -14,7 +14,7 @@ public class IntakeIn extends Command {
 
     @Override
     public void execute() {
-        intake.setIntakeVelo(-0.7); // -0.4 with neo 550
+        intake.setIntakeVelo(-1); // -0.4 with neo 550
     }
 
     @Override
