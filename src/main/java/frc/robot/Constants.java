@@ -71,9 +71,13 @@ public final class Constants {
 
         // Note: RIO is always 0
         // Note: PDH is always 1
-        public static final int RIGHT_LEADER_ID = 2;
-        public static final int RIGHT_FOLLOWER_ID = 3;
-        public static final int LEFT_LEADER_ID = 4;
-        public static final int LEFT_FOLLOWER_ID = 5;
+        public static final int RIGHT_LEADER_ID = 1;
+        public static final int RIGHT_FOLLOWER_ID = 2;
+        public static final int LEFT_LEADER_ID = 3;
+        public static final int LEFT_FOLLOWER_ID = 4;
+        public static final int ARM_LEADER_ID = 5;
+        public static final int INTAKE_LEADER_ID = 6;
+        public static final int INTAKE_FOLLOWER_ID = 7;
+        public static final int ARM_FOLLOWER_ID = 8;
     }
 }

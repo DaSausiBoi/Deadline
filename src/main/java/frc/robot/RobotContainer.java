@@ -2,28 +2,38 @@ package frc.robot;
 
 import static frc.robot.Constants.*;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.commands.AutoDriveBackCommand;
 
 import frc.robot.Constants.UsbConstants;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Arm;
+
+import frc.robot.commands.intake.IntakeIn;
+import frc.robot.commands.intake.IntakeOut;
+import frc.robot.commands.arm.ArmUp;
+import frc.robot.commands.arm.ArmDown;
 
 public class RobotContainer {
     private final Drivetrain drivetrain = new Drivetrain();
+    private final Intake m_intake = new Intake();
+    private final Arm m_arm = new Arm();
 
-    private final XboxController driverController = new XboxController(UsbConstants.DRIVER_CONTROLLER_PORT);
-    private final XboxController driverController2 = new XboxController(UsbConstants.AUXDRIVER_CONTROLLER_PORT);
+    private final IntakeIn m_intakeIn = new IntakeIn(m_intake);
+    private final IntakeOut m_intakeOut = new IntakeOut(m_intake);
+    private final ArmUp m_armUp = new ArmUp(m_arm);
+    private final ArmDown m_armDown = new ArmDown(m_arm);
+
+    private final CommandXboxController driverController = new CommandXboxController(UsbConstants.DRIVER_CONTROLLER_PORT);
 
     private final SendableChooser<Command> m_autoChooser = new SendableChooser<Command>();
 
@@ -40,20 +50,11 @@ public class RobotContainer {
       }
 
       private void configureButtonBindings() {
-        Trigger lb = new JoystickButton(driverController, XboxConstants.LB_BUTTON);
-        Trigger rb = new JoystickButton(driverController, XboxConstants.RB_BUTTON);
-        Trigger a = new JoystickButton(driverController2, XboxConstants.A_BUTTON);
-        Trigger b = new JoystickButton(driverController2, XboxConstants.B_BUTTON);
-        Trigger x = new JoystickButton(driverController2, XboxConstants.X_BUTTON);
-        Trigger y = new JoystickButton(driverController2, XboxConstants.Y_BUTTON);
-        POVButton povUp = new POVButton(driverController2, 0);
-        POVButton povUpRight = new POVButton(driverController2, 45);
-        POVButton povRight = new POVButton(driverController2, 90);
-        POVButton povDownRight = new POVButton(driverController2, 135);
-        POVButton povDown = new POVButton(driverController2, 180);
-        POVButton povDownLeft = new POVButton(driverController2, 225);
-        POVButton povLeft = new POVButton(driverController2, 270);
-        POVButton povUpLeft = new POVButton(driverController2, 315);
+        driverController.leftBumper().whileTrue(m_intakeIn);
+        driverController.x().whileTrue(m_intakeOut);
+        driverController.rightTrigger().whileTrue(m_armDown);
+        driverController.leftTrigger().whileTrue(m_armUp);
+
       }
 
       public void initializeAutoChooser(){
